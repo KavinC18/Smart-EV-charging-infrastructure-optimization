@@ -160,7 +160,9 @@ public class SimulationEngine {
         if (stations.isEmpty() || drivers.isEmpty()) return;
 
         // Step 3: Complete active sessions based on time probability
-        List<ChargingSession> activeSessions = sessionRepository.findByStatus("ACTIVE");
+        List<ChargingSession> activeSessions = sessionRepository.findByStatus("ACTIVE").stream()
+                .filter(session -> !"driver_kavin".equals(session.getUser().getUsername()))
+                .toList();
         for (ChargingSession session : activeSessions) {
             // Simulated charging time: average charging duration determines completion probability
             double completeProbability = 1.0 / session.getStation().getAverageChargingDurationMinutes();
