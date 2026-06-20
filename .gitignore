@@ -1,0 +1,22 @@
+# Logs
+*.log
+
+# Dependency directories
+node_modules/
+
+# Build outputs
+target/
+dist/
+backend/target/
+frontend/dist/
+frontend/node_modules/
+
+# OS/IDEs
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
