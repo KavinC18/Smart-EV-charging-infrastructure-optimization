@@ -18,13 +18,8 @@ public class PrivateNetworkCorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        // If preflight options request asks for private network access, allow it explicitly
-        if (request.getHeader("Access-Control-Request-Private-Network") != null) {
-            response.setHeader("Access-Control-Allow-Private-Network", "true");
-        }
-
-        // In all cases, set the loopback permission header for browser Private Network Access (PNA) compatibility
-        response.addHeader("Access-Control-Allow-Private-Network", "true");
+        // Set the loopback permission header for browser Private Network Access (PNA) compatibility
+        response.setHeader("Access-Control-Allow-Private-Network", "true");
 
         chain.doFilter(req, res);
     }
