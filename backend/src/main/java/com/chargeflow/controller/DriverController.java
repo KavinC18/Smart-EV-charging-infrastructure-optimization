@@ -206,6 +206,7 @@ public class DriverController {
             // Fetch a random driver to simulate queue release
             List<User> drivers = userRepository.findAll().stream()
                     .filter(u -> u.getRole() == UserRole.ROLE_DRIVER)
+                    .filter(u -> !"driver_kavin".equals(u.getUsername()))
                     .toList();
             if (!drivers.isEmpty()) {
                 User driver = drivers.get(random.nextInt(drivers.size()));

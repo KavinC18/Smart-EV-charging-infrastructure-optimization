@@ -94,6 +94,7 @@ public class SimulationController {
         // Fetch a random driver
         List<User> drivers = userRepository.findAll().stream()
                 .filter(u -> u.getRole() == com.chargeflow.entity.UserRole.ROLE_DRIVER)
+                .filter(u -> !"driver_kavin".equals(u.getUsername()))
                 .toList();
 
         if (drivers.isEmpty()) {

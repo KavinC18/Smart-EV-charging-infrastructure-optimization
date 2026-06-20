@@ -154,6 +154,7 @@ public class SimulationEngine {
         List<ChargingStation> stations = stationRepository.findAll();
         List<User> drivers = userRepository.findAll().stream()
                 .filter(u -> u.getRole() == UserRole.ROLE_DRIVER)
+                .filter(u -> !"driver_kavin".equals(u.getUsername()))
                 .toList();
 
         if (stations.isEmpty() || drivers.isEmpty()) return;
