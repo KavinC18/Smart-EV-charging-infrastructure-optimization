@@ -72,5 +72,23 @@ Use these profiles to sign in, control the simulation, or test charging sessions
 
 ---
 
-## 6. Project Conclusion
-With the completion of the Coimbatore grid seed and validation updates, **ChargeFlow** is fully functional and ready for active driver usage. The Erlang-C prediction engine computes expected queue times dynamically, dynamic pricing surges respond to usage levels, and the driver console handles geolocation and dashboard triggers cleanly with no overlaps.
+## 7. Cloud Deployment & Production Architecture
+
+To allow accessing the application on any device, the project was migrated from a local-only setup to a scalable, production-ready cloud deployment:
+
+### 7.1 Component Hosting & Public Domains
+- **React Frontend (Vercel):** Deployed to [smart-ev-charging-infrastructure-op.vercel.app](https://smart-ev-charging-infrastructure-op.vercel.app).
+- **Spring Boot REST API (Render):** Hosted as a Dockerized web service at [smart-ev-charging-infrastructure.onrender.com](https://smart-ev-charging-infrastructure.onrender.com).
+- **Relational Databases (Multi-Database Support):** Re-architected the backend configuration to support both **MySQL** (Railway/Aiven) and **PostgreSQL** (Neon/Aiven/Railway) dynamically.
+
+### 7.2 Core Changes for Production Readiness
+1. **Dynamic Environment Variables:** The Spring Boot backend dynamically configures its listening port (`${PORT}`), database credentials (`${SPRING_DATASOURCE_URL}`, `${SPRING_DATASOURCE_USERNAME}`, `${SPRING_DATASOURCE_PASSWORD}`), and CORS allowed origins (`${ALLOWED_ORIGINS}`) at startup.
+2. **Database-Agnostic Setup:** Added the `org.postgresql:postgresql` dependency to `pom.xml` and removed hardcoded MySQL dialects from `application.properties`, allowing Hibernate to auto-detect the database type and configure its dialect dynamically.
+3. **CORS Security Configuration:** Configured Spring Security to load CORS configurations from variables, allowing secure communication between the Vercel domain and the Render API.
+4. **Vercel Build Alignment:** Resolved asset loading issues by configuring Vite's base path dynamically in `vite.config.ts` depending on the platform environment (using `/` for Vercel, and falling back to repository subdirectory for GitHub Pages).
+5. **Local Multi-Device Preview:** Added `--host` mode configuration in `package.json` to allow developers to preview the application locally on secondary devices (such as smartphones) over the local Wi-Fi network.
+
+---
+
+## 8. Project Conclusion
+With the completion of the Coimbatore grid seed, validation updates, and production cloud architecture, **ChargeFlow** is fully functional and ready for active driver usage on any device. The Erlang-C prediction engine computes expected queue times dynamically, dynamic pricing surges respond to usage levels, and the driver console handles geolocation and dashboard triggers cleanly. The application runs securely in the cloud and supports flexible database choices like Neon PostgreSQL and Railway MySQL out-of-the-box.
