@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api, ChargingStation, UserProfile } from '../services/api';
+import { api, ChargingStation, UserProfile, API_BASE_URL } from '../services/api';
 import { Settings, Users, PlusCircle, Trash, RefreshCw, Cpu, Database, ToggleRight } from 'lucide-react';
 
 export const AdminDashboard: React.FC = () => {
@@ -29,7 +29,7 @@ export const AdminDashboard: React.FC = () => {
       
       const userList = await api.auth.getProfile().then(() => 
         // Direct admin API call for user list
-        fetch('http://localhost:8080/api/admin/users', {
+        fetch(`${API_BASE_URL}/admin/users`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('chargeflow_token')}` }
         }).then(res => res.json())
       );
@@ -38,7 +38,7 @@ export const AdminDashboard: React.FC = () => {
       const stationList = await api.stations.list();
       setStations(stationList);
 
-      const settings = await fetch('http://localhost:8080/api/admin/settings', {
+      const settings = await fetch(`${API_BASE_URL}/admin/settings`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('chargeflow_token')}` }
       }).then(res => res.json());
 
@@ -60,7 +60,7 @@ export const AdminDashboard: React.FC = () => {
   const handleSaveSettings = async () => {
     try {
       setError(null);
-      await fetch('http://localhost:8080/api/admin/settings', {
+      await fetch(`${API_BASE_URL}/admin/settings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export const AdminDashboard: React.FC = () => {
     if (!window.confirm('Are you sure you want to delete this user profile?')) return;
     try {
       setError(null);
-      await fetch(`http://localhost:8080/api/admin/users/${id}`, {
+      await fetch(`${API_BASE_URL}/admin/users/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('chargeflow_token')}` }
       });
